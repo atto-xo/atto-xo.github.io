@@ -1,0 +1,9 @@
+[package]
+name = "atto-xo-github-io-rust-check"
+version = "0.1.0"
+edition = "2021"
+publish = false
+description = "Rust starter for public website link and path guard"
+
+[lib]
+path = "src/lib.rs"
