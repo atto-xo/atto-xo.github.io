@@ -76,3 +76,24 @@ test('site remains responsive and supports reduced motion', () => {
   assert.match(sourceStyles, /prefers-reduced-motion:reduce/);
   assert.match(sourceStyles, /:focus-visible/);
 });
+
+
+test('X-heart identity uses a royal-blue pill and white-rimmed blue heart across the site', () => {
+  const css = readFileSync(resolve('src/styles/global.css'), 'utf8');
+  assert.match(css, /\.brand\{[^}]*border:1\.5px solid var\(--royal\);border-radius:999px/);
+  assert.match(css, /\.brand-heart\{[^}]*fill:var\(--royal\);stroke:#fff;stroke-width:1\.5px/);
+  assert.match(css, /\.cta-insignia svg\{[^}]*fill:var\(--royal\);stroke:#fff/);
+  assert.match(home, /class="brand"[^>]*aria-label="Atto XO home"/);
+  assert.match(home, /class="brand footer-brand"[^>]*aria-label="Atto XO home"/);
+
+  const notFound = readFileSync(join(dist, '404.html'), 'utf8');
+  assert.match(notFound, /class="brand error-brand"[^>]*aria-label="Atto XO home"/);
+  assert.match(notFound, /class="brand-heart"/);
+
+  const favicon = readFileSync(join(dist, 'favicon.svg'), 'utf8');
+  assert.match(favicon, /fill="#326BFF" stroke="#FFFFFF"/);
+
+  const socialPreview = readFileSync(join(dist, 'og-preview.svg'), 'utf8');
+  assert.match(socialPreview, /rx="56"[^>]*stroke="#326bff"/);
+  assert.match(socialPreview, /fill="#326bff" stroke="#ffffff"/);
+});
