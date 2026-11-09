@@ -1,0 +1,78 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync, existsSync } from 'node:fs';
+import { resolve, join } from 'node:path';
+
+const dist = resolve('dist');
+const homePath = join(dist, 'index.html');
+const home = existsSync(homePath) ? readFileSync(homePath, 'utf8') : '';
+
+test('Astro builds the home page and a useful 404 page', () => {
+  assert.ok(home, 'Expected dist/index.html; run npm run build first');
+  assert.ok(existsSync(join(dist, '404.html')), 'Missing static 404 page');
+  assert.match(home, /<html[^>]*lang="en"/);
+  assert.match(home, /<main\b[^>]*id="main"/);
+  assert.match(home, /<title>Atto XO/);
+});
+
+test('primary navigation and calls to action reference existing sections', () => {
+  const ids = new Set([...home.matchAll(/\bid="([^"]+)"/g)].map(m => m[1]));
+  const targets = [...home.matchAll(/\bhref="#([^"]+)"/g)].map(m => m[1]);
+  assert.ok(targets.length >= 8, 'Expected functional internal navigation');
+  for (const target of targets) {
+    assert.ok(ids.has(target), 'Broken section link: #' + target);
+  }
+});
+
+test('core explanation covers nonlinear regression, MIP/MILP, and human choice', () => {
+  for (const phrase of [
+    /nonlinear regression/i,
+    /mixed-integer/i,
+    /MIP &amp; MILP optimization/i,
+    /human trader/i,
+    /model/i,
+    /optimize/i,
+    /decide/i,
+  ]) assert.match(home, phrase);
+});
+
+test('research limitations and risk disclosure remain visible', () => {
+  assert.match(home, /in development/i);
+  assert.match(home, /illustrative/i);
+  assert.match(home, /not live trading data/i);
+  assert.match(home, /Nothing here is financial advice[^<]*guarantee of returns/i);
+  assert.match(home, /loss of capital/i);
+  assert.match(home, /Human decision required/i);
+});
+
+test('performance figures are labeled as targets rather than results', () => {
+  assert.match(home, /Target research cycle/);
+  assert.match(home, /Target publication window/);
+  assert.match(home, /not claims of demonstrated production performance/i);
+  assert.match(home, /not a delivery guarantee/i);
+});
+
+test('published metadata and favicon use the correct public origin', () => {
+  assert.match(home, /rel="canonical" href="https:\/\/atto-xo.github.io\/"/);
+  assert.match(home, /rel="icon" href="\/favicon.svg"/);
+  const faviconPath = join(dist, 'favicon.svg');
+  assert.ok(existsSync(faviconPath));
+  const favicon = readFileSync(faviconPath, 'utf8');
+  assert.match(favicon, /#326BFF/i);
+  assert.ok(existsSync(join(dist, 'og-preview.svg')));
+});
+
+test('site is static and never implies a functioning trading execution flow', () => {
+  assert.doesNotMatch(home, /<form\b/i);
+  assert.doesNotMatch(home, /<script[^>]+src=["']https?:\/\//i);
+  assert.match(home, /No trading account or execution is offered here/i);
+});
+
+test('site remains responsive and supports reduced motion', () => {
+  const assetsDir = join(dist, '_astro');
+  assert.ok(existsSync(assetsDir), 'Expected compiled Astro styles');
+  const sourceStyles = readFileSync(resolve('src/styles/global.css'), 'utf8');
+  assert.match(sourceStyles, /@media\(max-width:620px\)/);
+  assert.match(sourceStyles, /prefers-reduced-motion:reduce/);
+  assert.match(sourceStyles, /:focus-visible/);
+});

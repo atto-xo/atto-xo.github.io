@@ -1,0 +1,20 @@
+{
+  "name": "atto-xo-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Atto XO research-first trading intelligence marketing site",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test": "node --test tests/site.test.mjs",
+    "check": "npm run build && npm test"
+  },
+  "dependencies": {
+    "astro": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}
