@@ -38,9 +38,9 @@ jobs:
         run: npm run build
       - name: Run content, link, and compliance smoke tests
         run: npm test
-      - name: Install Chromium browser and Linux dependencies
-        run: npx playwright install --with-deps chromium
-      - name: Run real browser accessibility and responsive tests
+      - name: Install Chromium, Firefox, WebKit and Linux browser dependencies
+        run: npx playwright install --with-deps chromium firefox webkit
+      - name: Run three-engine accessibility and responsive E2E tests
         run: npm run test:e2e
       - name: Run preserved Rust guard tests
         run: cargo test --manifest-path tools/rust-bootstrap/Cargo.toml

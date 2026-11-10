@@ -23,6 +23,14 @@ export default defineConfig({
     {
       name: 'small-mobile-chromium',
       use: { ...devices['Desktop Chrome'], viewport: { width: 320, height: 640 }, isMobile: true, hasTouch: true }
+    },
+    {
+      name: 'desktop-firefox',
+      use: { ...devices['Desktop Firefox'], viewport: { width: 1366, height: 768 } }
+    },
+    {
+      name: 'desktop-webkit',
+      use: { ...devices['Desktop Safari'], viewport: { width: 1366, height: 768 } }
     }
   ],
   webServer: {

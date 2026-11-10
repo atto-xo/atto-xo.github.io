@@ -103,3 +103,8 @@ Open Graph and Twitter cards now use a 1200x630 PNG rasterized directly from the
 ### Public architecture explanation
 
 The `/architecture/` page describes intended Rust-first research workflow boundaries: point-in-time inputs, modeling, hard risk constraints, integer candidate selection, explainability, and human approval. These are **design contracts, not implemented production performance claims**. It links to the educational synthetic demo and the Atto XO RFC repository (some repositories may need access).
+
+
+### Cross-browser E2E gate
+
+GitHub Actions runs the existing accessibility, risk-disclosure, navigation and synthetic-optimization browser tests in **Chromium** (desktop, 390px and 320px mobile), **Firefox** (desktop), and **WebKit** (desktop). Browser engines are installed via the lockfile-pinned Playwright CLI and Linux packages; no third-party brokerage access is required. Screenshot evidence is retained per Playwright project with a bounded 7-day artifact lifetime. Cross-browser engine execution is a regression check, not formal screen-reader or native-device certification.
