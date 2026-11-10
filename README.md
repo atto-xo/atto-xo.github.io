@@ -113,3 +113,8 @@ GitHub Actions runs the existing accessibility, risk-disclosure, navigation and 
 ## Explainable synthetic research demo v2
 
 The research demo now provides three fictional constraint scenarios, forced-inclusion explanations of candidate exclusions (reoptimizing the entire bounded allocation), overlapping constraint-violation counts, sensitivity checks, and a JSON report generated locally in the browser. The report is deterministic and timestamp-free, contains only static invented observations, constraints, scores, and diagnostics, and explicitly disclaims market data or financial advice. It is not a production MILP optimizer or a live trading service.
+
+
+### Visual regression baseline hardening
+
+The test suite captures full viewport PNG screenshots of the homepage, architecture page and three research-demo states in Chromium desktop/mobile/320px, Firefox, and WebKit. CI compares a committed coarse 20×12 RGB grid fingerprint for each engine/state (25 fingerprints) using defined color-difference tolerances; full screenshots and machine-readable comparisons are retained as review artifacts. The grid detects broad layout and palette regressions, not tiny glyph changes and **not** pixel-perfect visual equality. Baseline refreshes are explicit, never automatically accepted on ordinary PR CI.
