@@ -68,3 +68,12 @@ test('demo does not overflow and makes no trading or data API requests', async (
   expect(unapproved).toEqual([]);
   await expect(page.getByText('There is no buy, sell, account, order-routing, or execution capability', { exact: false })).toBeVisible();
 });
+
+
+test('horizontally scrolling candidate table is keyboard accessible', async ({ page }) => {
+  await page.goto('/research-demo/');
+  const tableRegion = page.getByRole('region', { name: 'Scrollable synthetic allocation table' });
+  await expect(tableRegion).toHaveAttribute('tabindex', '0');
+  await tableRegion.focus();
+  await expect(tableRegion).toBeFocused();
+});

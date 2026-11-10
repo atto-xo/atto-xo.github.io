@@ -37,6 +37,7 @@
 .demo-reset:hover{background:#34558b}.demo-reset:focus-visible{outline:3px solid #a9c6ff;outline-offset:3px}
 .demo-status{color:#c2d4f3;font-size:12px}
 .demo-table-wrap{overflow-x:auto}
+.demo-table-wrap:focus-visible{outline:3px solid #a9c6ff;outline-offset:3px;border-radius:5px}
 .demo-table{width:100%;border-collapse:collapse;min-width:510px}
 .demo-table th{text-align:left;color:#bdd3ff;font-size:11px;font-weight:700;letter-spacing:.04em;padding:12px 9px;border-bottom:1px solid #4b6286}
 .demo-table td{padding:15px 9px;color:#e4edff;border-bottom:1px solid #2b4063;font-size:12px}
