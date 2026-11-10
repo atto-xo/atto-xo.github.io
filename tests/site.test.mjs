@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import * as fs from 'node:fs';
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 
@@ -152,4 +153,21 @@ test('manual dispatch cannot bypass main-only Pages publication', () => {
   }
   assert.match(workflow, /persist-credentials: false/);
   assert.match(workflow, /permissions:\s*\n\s*contents: read/);
+});
+
+
+test('first-party HTML, styles and scripts respect deterministic transfer-size budgets', () => {
+  const { readdirSync, statSync } = fs;
+  const assetDir = join(dist, '_astro');
+  const files = readdirSync(assetDir).map(file => ({
+    file, bytes: statSync(join(assetDir, file)).size
+  }));
+  const sum = extension => files.filter(item => item.file.endsWith(extension))
+    .reduce((total, item) => total + item.bytes, 0);
+  const htmlBytes = statSync(homePath).size;
+  assert.ok(htmlBytes <= 100 * 1024, 'HTML exceeds 100 KiB');
+  assert.ok(sum('.css') <= 100 * 1024, 'CSS exceeds 100 KiB');
+  assert.ok(sum('.js') <= 50 * 1024, 'First-party JS exceeds 50 KiB');
+  assert.ok(htmlBytes + sum('.css') + sum('.js') <= 250 * 1024,
+    'First-party homepage asset budget exceeds 250 KiB');
 });

@@ -15,9 +15,11 @@ npm install
 npm run dev
 npm run build
 npm test
+npx playwright install chromium
+npm run test:e2e
 ```
 
-Astro emits static pages to `dist/`. No server-side runtime or secrets are required. `npm test` expects `npm run build` first.
+Astro emits static pages to `dist/`. No server-side runtime or secrets are required. `npm test` and `npm run test:e2e` expect `npm run build` first. Browser tests use Chromium and a local `astro preview` server and exercise responsive layouts, keyboard navigation, risk disclosure, and automated axe WCAG checks. The size budget checks emitted first-party assets, rather than treating lab timings as production measurements.
 
 ### Pages deployment
 
@@ -30,7 +32,7 @@ The GitHub Actions workflow in `.github/workflows/site.yml` verifies the website
 
 Because the repository name is `atto-xo.github.io`, Astro's `site` is `https://atto-xo.github.io` and no repository subpath (`base`) is needed. The build is intentionally **not** a Jekyll/Hugo pipeline.
 
-The initial migration uses `npm install` because a verified lockfile has not yet been generated. **Reproducible dependency resolution remains an open release gate:** generate and commit `package-lock.json` from a trusted registry resolution, switch CI to `npm ci`, and retain dependency provenance before a release freeze.
+This branch temporarily generates a lockfile in a trusted GitHub Actions dependency-resolution run. The final release gate is to commit that exact, SHA-verified lockfile, replace `npm install` with `npm ci`, and run the complete verification suite again on the resulting exact head.
 
 ### Deployment safeguards
 
@@ -55,7 +57,9 @@ public/favicon.svg          X-heart brand icon
 public/og-preview.svg       Social sharing graphic
 public/sitemap.xml          Canonical crawler sitemap
 public/robots.txt           Crawler policy and sitemap discovery
-tests/site.test.mjs         Built-page, navigation, and claims tests
+tests/site.test.mjs         Built-page, navigation, claims, and asset-budget tests
+tests/e2e/site.spec.mjs     Browser-driven mobile, keyboard and WCAG regression tests
+playwright.config.mjs      Browser configuration and local preview server
 .github/workflows/site.yml  Static verification and GitHub Pages deployment
 tools/rust-bootstrap/       Preserved repository validation helper
 ```

@@ -9,12 +9,17 @@
     "build": "astro build",
     "preview": "astro preview",
     "test": "node --test tests/site.test.mjs",
-    "check": "npm run build && npm test"
+    "check": "npm run build && npm test && npm run test:e2e",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "astro": "^6.0.0"
   },
   "engines": {
     "node": ">=22.12.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
+    "@playwright/test": "^1.55.0"
   }
 }
