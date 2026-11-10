@@ -40,6 +40,8 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Run real browser accessibility and responsive tests
         run: npm run test:e2e
+      - name: Lighthouse mobile performance and accessibility lab gate
+        run: npm run audit:lighthouse
       - name: Run preserved Rust guard tests
         run: cargo test --manifest-path tools/rust-bootstrap/Cargo.toml
       - name: Preserve browser QA evidence
