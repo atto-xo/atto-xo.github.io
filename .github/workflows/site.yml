@@ -40,7 +40,7 @@ jobs:
         run: npm test
       - name: Install Chromium, Firefox, WebKit and Linux browser dependencies
         run: npx playwright install --with-deps chromium firefox webkit
-      - name: Run three-engine accessibility and responsive E2E tests
+      - name: Enforce committed visual baselines across Chromium Firefox WebKit
         run: npm run test:e2e
       - name: Run preserved Rust guard tests
         run: cargo test --manifest-path tools/rust-bootstrap/Cargo.toml
