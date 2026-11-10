@@ -85,3 +85,10 @@ The static `/research-demo/` route provides a **synthetic, educational** illustr
 The demo requires no account, API, server, credentials, network feed, trade execution, or data collection. Pure model/optimizer tests check fitting correctness and exhaustively compare optimality and feasibility across a parameter grid. Playwright tests cover the demo at desktop and mobile widths, slider interactions, WCAG A/AA, and outbound request restrictions.
 
 Do not use the synthetic output as trading guidance or describe the mock score as a return or backtested result.
+
+
+## Browser QA evidence
+
+The verify job retains Playwright browser screenshots and single-navigation timing diagnostics for seven days in the `atto-xo-browser-evidence-*` workflow artifact, across all configured desktop/mobile widths. These are review artifacts, **not** Lighthouse scores, Core Web Vitals field measurements, or performance guarantees. CI also checks canonical and social metadata, sitemap parity, internal links, and the absence of remote script tags.
+
+The public social card remains SVG-based; compatibility with raster-only social providers is not yet verified.
