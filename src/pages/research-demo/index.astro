@@ -2,6 +2,7 @@
 import '../../styles/global.css';
 import '../../styles/research-demo.css';
 import { DEMO_CANDIDATES } from '../../lib/research-demo.mjs';
+import { SYNTHETIC_SCENARIOS } from '../../lib/research-demo-v2.mjs';
 const heart = 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z';
 ---
 <!doctype html>
@@ -77,6 +78,13 @@ const heart = 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0
             <p>Choose limits, then compare the highest-scoring feasible integer allocation. The tiny search is solved exhaustively, illustrating a bounded mixed-integer optimization problem—not a production MILP solver.</p>
           </div>
           <div class="demo-card">
+            <div class="demo-scenario-box">
+              <div><label for="demo-scenario">Illustrative constraint scenario</label><p>Presets alter only fictional limits; sliders create custom limits.</p></div>
+              <select id="demo-scenario">
+                {SYNTHETIC_SCENARIOS.map(s => <option value={s.id} selected={s.id === 'balanced'}>{s.name}</option>)}
+                <option value="custom">Custom limits</option>
+              </select>
+            </div>
             <div class="demo-form-grid">
               <div class="demo-control"><label for="demo-budget">Illustrative budget</label><input id="demo-budget" type="range" min="50" max="150" step="10" value="90"/><output id="budget-value" for="demo-budget">90 units</output></div>
               <div class="demo-control"><label for="demo-risk">Downside limit</label><input id="demo-risk" type="range" min="4" max="25" step="1" value="12"/><output id="risk-value" for="demo-risk">12 units</output></div>
@@ -84,6 +92,7 @@ const heart = 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0
             </div>
             <div class="demo-actions">
               <button id="demo-reset" type="button" class="demo-reset">Reset constraints</button>
+              <button id="demo-download" type="button" class="demo-reset">Download synthetic JSON report</button>
               <span id="demo-status" class="demo-status" role="status" aria-live="polite">Evaluating synthetic possibilities…</span>
             </div>
           </div>
@@ -104,10 +113,52 @@ const heart = 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0
                 </tbody>
               </table>
             </div>
+            
+            <section class="demo-subsection" aria-labelledby="reason-title">
+              <h3 id="reason-title">Why each candidate was selected or excluded</h3>
+              <p class="demo-muted">Excluded candidates are checked by re-optimizing the entire fictional allocation while requiring that candidate, not by simply adding a unit.</p>
+              <div class="demo-reasons">
+                {DEMO_CANDIDATES.map(candidate => <div class="demo-reason"><strong>{candidate.name}</strong><p data-reason={candidate.id}>Calculating…</p></div>)}
+              </div>
+              <p id="rejection-stats" class="demo-muted">Evaluating synthetic constraint violations…</p>
+            </section>
             <p class="demo-note">Each candidate has a fixed per-candidate cap. The example evaluates every allowed integer combination, rejects those violating budget, downside, or total-unit limits, then selects the feasible maximum-score combination (ties prefer lower downside and then lower budget use). The zero-unit allocation remains available.</p>
           </div>
         </section>
 
+
+        <section class="demo-step" aria-labelledby="comparison-heading">
+          <div class="demo-step-header">
+            <p class="section-kicker">02.5 / COMPARE</p>
+            <h2 id="comparison-heading">See the trade-offs, not just the winner.</h2>
+            <p>These three fixed fictional limits produce different allocation choices. Scores are arbitrary invented points, not returns.</p>
+          </div>
+          <div class="demo-grid">
+            <div class="demo-card">
+              <h3>Compare constraint scenarios</h3>
+              <div class="demo-table-wrap" tabindex="0" role="region" aria-label="Scrollable synthetic scenario comparison">
+                <table class="demo-table">
+                  <caption class="sr-only">Fictional preset limits and optimal synthetic scores</caption>
+                  <thead><tr><th scope="col">Scenario</th><th scope="col">Budget</th><th scope="col">Downside</th><th scope="col">Units</th><th scope="col">Score</th></tr></thead>
+                  <tbody>
+                    {SYNTHETIC_SCENARIOS.map(s => <tr data-scenario-row={s.id}>
+                      <th scope="row">{s.name}</th><td>{s.budget}</td><td>{s.downsideLimit}</td><td>{s.maxUnits}</td><td data-score>—</td>
+                    </tr>)}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="demo-card">
+              <h3>One-at-a-time sensitivity</h3>
+              <p class="demo-muted">Relax just one limit relative to the current selection. An unchanged score means this small change does not improve this particular fictional objective.</p>
+              <ul class="demo-sensitivity">
+                <li><span>Budget +10</span><strong data-sensitivity="budget">—</strong></li>
+                <li><span>Downside +2</span><strong data-sensitivity="downside">—</strong></li>
+                <li><span>Unit cap +1</span><strong data-sensitivity="unit-cap">—</strong></li>
+              </ul>
+            </div>
+          </div>
+        </section>
         <section class="demo-step" aria-labelledby="decision-heading">
           <div class="demo-step-header">
             <p class="section-kicker">03 / DECIDE</p>
@@ -132,6 +183,7 @@ const heart = 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0
     </div>
     <script>
       import { SYNTHETIC_SERIES, fitQuadratic, solvePortfolio, DEMO_CANDIDATES } from '../../lib/research-demo.mjs';
+      import { SYNTHETIC_SCENARIOS, explainSyntheticAllocation, compareSyntheticScenarios, evaluateSyntheticSensitivity, createSyntheticReport } from '../../lib/research-demo-v2.mjs';
 
       const get = id => document.getElementById(id);
       const observations = [...SYNTHETIC_SERIES];
@@ -149,32 +201,78 @@ const heart = 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0
       get('future-path').setAttribute('d', path([model.fitted.at(-1), model.nextIllustrativePoint], observations.length - 1));
       get('demo-next-point').textContent = model.nextIllustrativePoint.toFixed(1);
 
+      function readLimits() {
+        return {
+          budget: Number(get('demo-budget').value),
+          downsideLimit: Number(get('demo-risk').value),
+          maxUnits: Number(get('demo-units').value)
+        };
+      }
+      function applyPreset(preset) {
+        get('demo-budget').value = String(preset.budget);
+        get('demo-risk').value = String(preset.downsideLimit);
+        get('demo-units').value = String(preset.maxUnits);
+        get('demo-scenario').value = preset.id;
+      }
+      for (const comparison of compareSyntheticScenarios()) {
+        document.querySelector('[data-scenario-row="' + comparison.id + '"] [data-score]').textContent =
+          String(comparison.score);
+      }
       function render() {
-        const budget = Number(get('demo-budget').value);
-        const downsideLimit = Number(get('demo-risk').value);
-        const maxUnits = Number(get('demo-units').value);
+        const limits = readLimits();
+        const { budget, downsideLimit, maxUnits } = limits;
         get('budget-value').textContent = budget + ' units';
         get('risk-value').textContent = downsideLimit + ' units';
         get('units-value').textContent = maxUnits + ' units';
-        const solution = solvePortfolio({ budget, downsideLimit, maxUnits });
+        const analysis = explainSyntheticAllocation(limits);
+        const solution = analysis.optimal;
         get('used-budget').textContent = solution.usedBudget + ' / ' + budget;
         get('used-risk').textContent = solution.usedDownside + ' / ' + downsideLimit;
         get('total-score').textContent = String(solution.score);
         for (const [i, candidate] of DEMO_CANDIDATES.entries()) {
           const row = document.querySelector('[data-candidate="' + candidate.id + '"]');
           row.querySelector('[data-output="units"]').textContent = String(solution.units[i]);
+          const reason = analysis.candidates.find(value => value.id === candidate.id);
+          document.querySelector('[data-reason="' + candidate.id + '"]').textContent = reason.explanation;
+        }
+        const scan = analysis.enumeration;
+        get('rejection-stats').textContent = scan.rejected + ' of ' + scan.examined +
+          ' combinations excluded. Overlapping violations: budget ' +
+          scan.overlappingViolationCounts.budget + ', downside ' +
+          scan.overlappingViolationCounts.downside + ', total-unit cap ' +
+          scan.overlappingViolationCounts.unitCap + '.';
+        for (const item of evaluateSyntheticSensitivity(limits)) {
+          document.querySelector('[data-sensitivity="' + item.id + '"]').textContent =
+            '+' + item.delta + ' synthetic points';
         }
         get('demo-status').textContent = solution.feasible + ' of ' + solution.examined +
           ' combinations satisfy all selected limits.';
       }
       for (const id of ['demo-budget', 'demo-risk', 'demo-units']) {
-        get(id).addEventListener('input', render);
+        get(id).addEventListener('input', () => {
+          get('demo-scenario').value = 'custom';
+          render();
+        });
       }
-      get('demo-reset').addEventListener('click', () => {
-        get('demo-budget').value = '90';
-        get('demo-risk').value = '12';
-        get('demo-units').value = '4';
+      get('demo-scenario').addEventListener('change', () => {
+        const preset = SYNTHETIC_SCENARIOS.find(value => value.id === get('demo-scenario').value);
+        if (preset) applyPreset(preset);
         render();
+      });
+      get('demo-reset').addEventListener('click', () => {
+        applyPreset(SYNTHETIC_SCENARIOS[0]);
+        render();
+      });
+      get('demo-download').addEventListener('click', () => {
+        const json = JSON.stringify(createSyntheticReport(readLimits()), null, 2) + '\n';
+        const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = 'atto-xo-synthetic-research.json';
+        document.body.append(anchor);
+        anchor.click();
+        anchor.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
       });
       render();
     </script>
