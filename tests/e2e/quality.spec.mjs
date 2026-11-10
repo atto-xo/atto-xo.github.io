@@ -3,7 +3,7 @@ import { resolve, join } from 'node:path';
 import { test, expect } from '@playwright/test';
 
 test('capture screenshots and navigation timings for public pages', async ({ page }, testInfo) => {
-  for (const [route, label] of [['/', 'homepage'], ['/research-demo/', 'research-demo']]) {
+  for (const [route, label] of [['/', 'homepage'], ['/research-demo/', 'research-demo'], ['/architecture/', 'architecture']]) {
     const response = await page.goto(route, { waitUntil: 'domcontentloaded' });
     expect(response?.status()).toBe(200);
     if (label === 'research-demo') {

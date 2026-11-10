@@ -1,0 +1,98 @@
+---
+import '../../styles/global.css';
+import '../../styles/research-demo.css';
+const heart = 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#090f21" />
+    <meta name="description" content="Atto XO's proposed Rust-first human-directed research architecture: point-in-time inputs, nonlinear modeling, hard optimization limits, explainability, and human review." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Research architecture — Atto XO" />
+    <meta property="og:description" content="Understand the proposed model, optimize, and human-decide workflow. In development; no live trading." />
+    <meta property="og:url" content="https://atto-xo.github.io/architecture/" />
+    <meta property="og:image" content="https://atto-xo.github.io/og-preview.png" />
+    <meta property="og:image:alt" content="Atto XO blue-heart research brand" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Research architecture — Atto XO" />
+    <meta name="twitter:description" content="A proposed human-first, risk-aware research workflow, not a trading service." />
+    <meta name="twitter:image" content="https://atto-xo.github.io/og-preview.png" />
+    <link rel="canonical" href="https://atto-xo.github.io/architecture/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>Research architecture — Atto XO</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="demo-shell">
+      <header class="demo-header">
+        <div class="container demo-header-inner">
+          <a class="brand" href="/"><span class="brand-atto">atto</span><span class="brand-x">x</span><svg class="brand-heart" viewBox="0 0 24 24" aria-hidden="true"><path d={heart}/></svg><span class="sr-only">o — home</span></a>
+          <a class="demo-home" href="/">Back to Atto XO</a>
+        </div>
+      </header>
+      <main class="container demo-main" id="main">
+        <div class="demo-lead">
+          <p class="section-kicker">PROPOSED ARCHITECTURE / IN DEVELOPMENT</p>
+          <h1>Research you can examine.<br/><span class="gradient-text">Decisions you control.</span></h1>
+          <p>Atto XO is being designed as a Rust-first research workspace. The intended system separates what the model estimates from what the optimizer permits, and leaves the decision to a person.</p>
+          <div class="demo-disclaimer"><strong>Design proposal, not deployed capabilities.</strong> This page describes the intended workflow. It does not claim a live trading service, independently validated performance, or production deployment.</div>
+        </div>
+
+        <section class="demo-step" aria-labelledby="pipeline-title">
+          <div class="demo-step-header">
+            <p class="section-kicker">01 / RESEARCH PIPELINE</p>
+            <h2 id="pipeline-title">From evidence to explainable choices.</h2>
+            <p>Each stage should expose assumptions and outputs, with explicit boundaries between modeling, feasible allocations, and execution.</p>
+          </div>
+          <div class="feature-grid">
+            <article class="feature-card"><h3>1. Freeze inputs</h3><p>Capture eligible, point-in-time research observations with provenance. Reject missing or stale data before proposing decisions.</p><span class="feature-foot">OBSERVE <span aria-hidden="true">→</span></span></article>
+            <article class="feature-card"><h3>2. Investigate signals</h3><p>Explore nonlinear relationships, uncertainty, out-of-sample validation and alternative market scenarios; do not confuse a fitted curve with a forecast.</p><span class="feature-foot">MODEL <span aria-hidden="true">→</span></span></article>
+            <article class="feature-card"><h3>3. Apply hard constraints</h3><p>Express budget, exposure, concentration and downside requirements as explicit optimization limits that must be satisfied.</p><span class="feature-foot">CONSTRAIN <span aria-hidden="true">→</span></span></article>
+            <article class="feature-card"><h3>4. Compare feasible choices</h3><p>Use MIP/MILP-style integer selection and sizing to examine candidate trade-offs, including a valid no-position outcome.</p><span class="feature-foot">OPTIMIZE <span aria-hidden="true">→</span></span></article>
+            <article class="feature-card"><h3>5. Make decisions legible</h3><p>Show why an allocation was accepted or rejected, which assumptions dominate it, and what could invalidate the result.</p><span class="feature-foot">EXPLAIN <span aria-hidden="true">→</span></span></article>
+            <article class="feature-card"><h3>6. Keep humans in control</h3><p>Present research for independent review. Any real-world brokerage execution would be a separate authorization and security boundary.</p><span class="feature-foot">DECIDE <span aria-hidden="true">✓</span></span></article>
+          </div>
+        </section>
+
+        <section class="demo-step" aria-labelledby="contract-title">
+          <div class="demo-step-header">
+            <p class="section-kicker">02 / DESIGN CONTRACTS</p>
+            <h2 id="contract-title">What a trustworthy research cycle needs.</h2>
+          </div>
+          <div class="demo-grid">
+            <div class="demo-card">
+              <h3>Reproducibility and validation</h3>
+              <p>Version the eligible input snapshot, model identity, constraint configuration and review output. Provide scenario tests and replayable evidence for the proposed research decisions.</p>
+              <p>Design targets such as cycle frequency are engineering goals, not demonstrated production service levels.</p>
+            </div>
+            <div class="demo-card">
+              <h3>Isolation and authorization</h3>
+              <p>Keep research generation separate from order execution. Limit privileged operations, protect user data and require explicit human authority for any future execution system.</p>
+              <p>The current public website has no accounts, market feed, broker API or live recommendation endpoint.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="demo-step" aria-labelledby="explore-title">
+          <div class="demo-step-header">
+            <p class="section-kicker">03 / EXPLORE FURTHER</p>
+            <h2 id="explore-title">See the educational demonstration.</h2>
+            <p>The interactive demo uses nine invented observations and a tiny exhaustive integer-allocation example. It is not a production nonlinear model, real market forecast, or commercial MILP solver.</p>
+          </div>
+          <div class="demo-actions">
+            <a class="button button-primary" href="/research-demo/">Try the synthetic research demo</a>
+            <a class="button button-secondary" href="https://github.com/atto-xo/atto-xo-rfcs">Read architecture RFCs</a>
+          </div>
+          <p class="demo-note">Some linked repositories may require access. Product implementation status must be verified independently of this design description.</p>
+        </section>
+      </main>
+      <footer class="demo-footer"><div class="container">
+        <p><strong>Research and risk disclosure.</strong> Atto XO is in development. No live market data, broker execution, independently validated returns or investment advice are offered here. Nothing here is a solicitation or guarantee of returns. Trading can result in loss of capital.</p>
+        <a class="demo-home" href="/">Return to Atto XO</a>
+      </div></footer>
+    </div>
+  </body>
+</html>

@@ -6,7 +6,8 @@ import { resolve, join } from 'node:path';
 const dist = resolve('dist');
 const pages = [
   { path: 'index.html', canonical: 'https://atto-xo.github.io/' },
-  { path: 'research-demo/index.html', canonical: 'https://atto-xo.github.io/research-demo/' }
+  { path: 'research-demo/index.html', canonical: 'https://atto-xo.github.io/research-demo/' },
+  { path: 'architecture/index.html', canonical: 'https://atto-xo.github.io/architecture/' }
 ];
 function attrs(html, tag) {
   return [...html.matchAll(new RegExp('<' + tag + '\\b([^>]*)>', 'gi'))].map(match => match[1]);
