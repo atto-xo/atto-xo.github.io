@@ -113,3 +113,8 @@ GitHub Actions runs the existing accessibility, risk-disclosure, navigation and 
 ## Explainable synthetic research demo v2
 
 The research demo now provides three fictional constraint scenarios, forced-inclusion explanations of candidate exclusions (reoptimizing the entire bounded allocation), overlapping constraint-violation counts, sensitivity checks, and a JSON report generated locally in the browser. The report is deterministic and timestamp-free, contains only static invented observations, constraints, scores, and diagnostics, and explicitly disclaims market data or financial advice. It is not a production MILP optimizer or a live trading service.
+
+
+### Independent numerical invariants and report reproducibility
+
+The optimizer audit runs 4,096 seeded constraint configurations against a separately implemented full enumeration oracle, checking score/tie-break/feasibility, each forced-candidate optimum and explainable overlapping violations. It also exercises zero-position and maximum-boundary inputs, parameter monotonicity, 250 synthetic quadratic fits and deterministic, unprivileged JSON report bytes (including that unknown user fields never leak). Playwright downloads the same JSON twice and checks byte equality across Chromium, Firefox and WebKit. These are software-correctness checks of an educational fixture, not investment-performance certification.
