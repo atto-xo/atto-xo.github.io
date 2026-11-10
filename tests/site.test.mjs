@@ -146,6 +146,10 @@ test('manual dispatch cannot bypass main-only Pages publication', () => {
   const workflow = readFileSync(resolve('.github/workflows/site.yml'), 'utf8');
   const gate = "github.ref == 'refs/heads/main' && github.event_name != 'pull_request'";
   assert.equal(workflow.split(gate).length - 1, 2, 'Both upload and deploy require main');
+  for (const action of ['checkout', 'setup-node', 'upload-pages-artifact', 'deploy-pages']) {
+    assert.match(workflow, new RegExp('uses: actions/' + action + '@[a-f0-9]{40}\\b'),
+      'Pin ' + action + ' to an immutable commit');
+  }
   assert.match(workflow, /persist-credentials: false/);
   assert.match(workflow, /permissions:\s*\n\s*contents: read/);
 });

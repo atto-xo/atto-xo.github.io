@@ -34,7 +34,7 @@ The initial migration uses `npm install` because a verified lockfile has not yet
 
 ### Deployment safeguards
 
-Pull requests build and test without publishing. Artifact upload and deployment require `refs/heads/main`, including manually dispatched runs. Checkout does not persist repository credentials in the runner workspace. A green CI run does not replace a review of public claims and disclosures.
+Pull requests build and test without publishing. Artifact upload and deployment require `refs/heads/main`, including manually dispatched runs. Checkout does not persist repository credentials in the runner workspace, and all four first-party workflow actions are pinned to reviewed commit SHAs. A green CI run does not replace a review of public claims and disclosures.
 
 ## Copy standards and design principles
 
