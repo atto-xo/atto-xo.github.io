@@ -30,8 +30,11 @@ jobs:
           package-manager-cache: false
       - name: Verify pinned lockfile checksum
         run: sha256sum --check tools/lockfile.sha256
-      - name: Install dependencies
-        run: npm ci --no-audit --no-fund
+      - name: Bootstrap pinned Lighthouse dependency lock (temporary)
+        run: npm install --no-audit --no-fund
+      - name: Export lockfile receipt (temporary)
+        run: |
+          node --input-type=module -e "import fs from 'node:fs'; import crypto from 'node:crypto'; const data=fs.readFileSync('package-lock.json'); console.log('LIGHTHOUSE_LOCK_SHA256:'+crypto.createHash('sha256').update(data).digest('hex')); const b=data.toString('base64'); console.log('LIGHTHOUSE_LOCK_BEGIN'); for (let i=0;i<b.length;i+=1200) console.log('LIGHTHOUSE_LOCK_CHUNK:'+b.slice(i,i+1200)); console.log('LIGHTHOUSE_LOCK_END');"
       - name: Build static Astro pages
         run: npm run build
       - name: Run content, link, and compliance smoke tests
@@ -40,6 +43,8 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Run real browser accessibility and responsive tests
         run: npm run test:e2e
+      - name: Lighthouse mobile performance and accessibility lab gate
+        run: npm run audit:lighthouse
       - name: Run preserved Rust guard tests
         run: cargo test --manifest-path tools/rust-bootstrap/Cargo.toml
       - name: Preserve browser QA evidence

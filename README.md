@@ -92,3 +92,8 @@ Do not use the synthetic output as trading guidance or describe the mock score a
 The verify job retains Playwright browser screenshots and single-navigation timing diagnostics for seven days in the `atto-xo-browser-evidence-*` workflow artifact, across all configured desktop/mobile widths. These are review artifacts, **not** Lighthouse scores, Core Web Vitals field measurements, or performance guarantees. CI also checks canonical and social metadata, sitemap parity, internal links, and the absence of remote script tags.
 
 The public social card remains SVG-based; compatibility with raster-only social providers is not yet verified.
+
+
+## Lighthouse CI (synthetic lab metrics)
+
+Lighthouse 13.6.0 audits both static pages against a local Astro preview with Playwright Chromium. Starting floors are performance 50/100, accessibility 90/100, best-practices 90/100, SEO 85/100; lab CLS <= 0.15 and LCP <= 7000 ms. These are single-run CI lab checks, not real-user field Core Web Vitals. JSON reports go into the seven-day QA artifact. The initial dependency bootstrap must be replaced by a verified lockfile and `npm ci` before release.
