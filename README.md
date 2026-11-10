@@ -51,6 +51,9 @@ Pull requests build and test without publishing. Artifact upload and deployment 
 
 ```text
 src/pages/index.astro       Main marketing experience
+src/pages/research-demo/index.astro  Educational synthetic interactive research walkthrough
+src/lib/research-demo.mjs   Deterministic quadratic fit and exact bounded integer allocation
+src/styles/research-demo.css  Responsive demo presentation
 src/pages/404.astro         Custom not-found page
 src/styles/global.css       Responsive, accessible dark/royal-blue design
 public/favicon.svg          X-heart brand icon
@@ -73,3 +76,12 @@ tools/rust-bootstrap/       Preserved repository validation helper
 - [Conformance tests](https://github.com/atto-xo/atto-xo-conformance-tests) (may require access)
 
 **Financial risk disclosure:** This is an in-development research product, not investment advice or an offer of live brokerage execution. Trading can result in loss of capital.
+
+
+## Interactive research demonstration
+
+The static `/research-demo/` route provides a **synthetic, educational** illustration of the model → optimize → decide workflow. Nine invented observations are fitted by a quadratic least-squares model; the illustrative extrapolation is not a forecast. Candidate costs, scores, and downside units are fictional and independent of the curve. A bounded enumeration (48 combinations) chooses a maximum-score feasible integer allocation under adjustable hard constraints, with deterministic tie-breaking. This illustrates a tiny mixed-integer optimization problem but **is not a production MILP solver**.
+
+The demo requires no account, API, server, credentials, network feed, trade execution, or data collection. Pure model/optimizer tests check fitting correctness and exhaustively compare optimality and feasibility across a parameter grid. Playwright tests cover the demo at desktop and mobile widths, slider interactions, WCAG A/AA, and outbound request restrictions.
+
+Do not use the synthetic output as trading guidance or describe the mock score as a return or backtested result.
