@@ -1,3 +1,5 @@
+import { mkdir, writeFile } from 'node:fs/promises';
+import { resolve, join } from 'node:path';
 import { test, expect } from '@playwright/test';
 
 test('capture screenshots and navigation timings for public pages', async ({ page }, testInfo) => {
@@ -22,16 +24,13 @@ test('capture screenshots and navigation timings for public pages', async ({ pag
     expect(metrics.navigationType).toBe('navigate');
     expect(metrics.domContentLoadedMs).toBeGreaterThan(0);
     expect(metrics.externalScriptSources).toEqual([]);
-    await testInfo.attach(label + '-timing.json', {
-      body: Buffer.from(JSON.stringify({
-        path: route, project: testInfo.project.name, ...metrics,
-        caveat: 'One Chromium CI lab sample; not Lighthouse or field Core Web Vitals'
-      }, null, 2)),
-      contentType: 'application/json'
-    });
-    await testInfo.attach(label + '-screenshot.png', {
-      body: await page.screenshot({ fullPage: true, animations: 'disabled' }),
-      contentType: 'image/png'
-    });
+    const dir = resolve('qa-evidence', testInfo.project.name);
+    await mkdir(dir, { recursive: true });
+    await writeFile(join(dir, label + '-timing.json'), JSON.stringify({
+      path: route, project: testInfo.project.name, ...metrics,
+      caveat: 'One Chromium CI lab sample; not Lighthouse or field Core Web Vitals'
+    }, null, 2) + '\n');
+    await writeFile(join(dir, label + '-screenshot.png'),
+      await page.screenshot({ fullPage: true, animations: 'disabled' }));
   }
 });

@@ -60,8 +60,10 @@ test('internal links in all published pages have valid emitted targets', () => {
 
 test('QA evidence upload is pinned and intentionally not a deployment', () => {
   const workflow = readFileSync(resolve('.github/workflows/site.yml'), 'utf8');
-  assert.match(workflow, /uses: actions\/upload-artifact@[a-f0-9]{40} # v4/);
+  assert.match(workflow, /uses: actions\/upload-artifact@[a-f0-9]{40} # v6/);
   assert.match(workflow, /name: atto-xo-browser-evidence/);
   assert.match(workflow, /retention-days: 7/);
+  assert.match(workflow, /path: qa-evidence\//);
+  assert.match(workflow, /if-no-files-found: error/);
   assert.match(workflow, /if: always\(\)/);
 });
