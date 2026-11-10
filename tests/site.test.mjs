@@ -112,7 +112,7 @@ test('crawler files discover only the canonical public home page', () => {
   assert.match(robots, /^Allow:\s*\/$/m);
   assert.match(robots, /^Sitemap:\s*https:\/\/atto-xo\.github\.io\/sitemap\.xml$/m);
   assert.match(sitemap, /<urlset xmlns="http:\/\/www\.sitemaps\.org\/schemas\/sitemap\/0\.9">/);
-  assert.deepEqual([...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(m => m[1]), ['https://atto-xo.github.io/', 'https://atto-xo.github.io/research-demo/']);
+  assert.deepEqual([...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(m => m[1]), ['https://atto-xo.github.io/', 'https://atto-xo.github.io/research-demo/', 'https://atto-xo.github.io/architecture/']);
   assert.doesNotMatch(sitemap, /404\.html/);
 });
 
@@ -198,4 +198,14 @@ test('synthetic research demo is built, indexed, and clearly isolated from tradi
   assert.match(html, /Human decision required/);
   assert.match(home, /href="\/research-demo\/"/);
   assert.doesNotMatch(html, /<form\b/i);
+});
+
+
+test('architecture page is emitted with honest design status and direct demo link', () => {
+  const html = readFileSync(join(dist, 'architecture/index.html'), 'utf8');
+  assert.match(html, /PROPOSED ARCHITECTURE/);
+  assert.match(html, /not deployed capabilities/i);
+  assert.match(html, /no accounts, market feed, broker API/i);
+  assert.match(html, /href="\/research-demo\/"/);
+  assert.match(home, /href="\/architecture\/"/);
 });

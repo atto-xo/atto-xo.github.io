@@ -32,6 +32,8 @@ jobs:
         run: sha256sum --check tools/lockfile.sha256
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
+      - name: Verify raster asset receipt
+        run: sha256sum --check tools/social-preview.sha256
       - name: Build static Astro pages
         run: npm run build
       - name: Run content, link, and compliance smoke tests

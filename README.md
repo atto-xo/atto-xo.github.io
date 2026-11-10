@@ -52,6 +52,7 @@ Pull requests build and test without publishing. Artifact upload and deployment 
 ```text
 src/pages/index.astro       Main marketing experience
 src/pages/research-demo/index.astro  Educational synthetic interactive research walkthrough
+src/pages/architecture/index.astro  Public proposed architecture and RFC pointers
 src/lib/research-demo.mjs   Deterministic quadratic fit and exact bounded integer allocation
 src/styles/research-demo.css  Responsive demo presentation
 src/pages/404.astro         Custom not-found page
@@ -91,4 +92,14 @@ Do not use the synthetic output as trading guidance or describe the mock score a
 
 The verify job retains Playwright browser screenshots and single-navigation timing diagnostics for seven days in the `atto-xo-browser-evidence-*` workflow artifact, across all configured desktop/mobile widths. These are review artifacts, **not** Lighthouse scores, Core Web Vitals field measurements, or performance guarantees. CI also checks canonical and social metadata, sitemap parity, internal links, and the absence of remote script tags.
 
-The public social card remains SVG-based; compatibility with raster-only social providers is not yet verified.
+A raster social card is provided; compatibility with third-party social sharing platforms must still be checked after release.
+
+
+### Social-preview PNG
+
+Open Graph and Twitter cards now use a 1200x630 PNG rasterized directly from the blue-heart public/og-preview.svg. Both public pages reference this raster URL. Reproduce it with `npx playwright install chromium` and `node tools/render-social-preview.mjs` (lockfile-pinned Playwright). The final PNG is committed as a static asset; normal builds require no browser. Check social providers after release.
+
+
+### Public architecture explanation
+
+The `/architecture/` page describes intended Rust-first research workflow boundaries: point-in-time inputs, modeling, hard risk constraints, integer candidate selection, explainability, and human approval. These are **design contracts, not implemented production performance claims**. It links to the educational synthetic demo and the Atto XO RFC repository (some repositories may need access).
