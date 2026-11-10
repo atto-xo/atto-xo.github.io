@@ -91,4 +91,9 @@ Do not use the synthetic output as trading guidance or describe the mock score a
 
 The verify job retains Playwright browser screenshots and single-navigation timing diagnostics for seven days in the `atto-xo-browser-evidence-*` workflow artifact, across all configured desktop/mobile widths. These are review artifacts, **not** Lighthouse scores, Core Web Vitals field measurements, or performance guarantees. CI also checks canonical and social metadata, sitemap parity, internal links, and the absence of remote script tags.
 
-The public social card remains SVG-based; compatibility with raster-only social providers is not yet verified.
+A raster social card is provided; compatibility with third-party social sharing platforms must still be checked after release.
+
+
+### Social-preview PNG
+
+Open Graph and Twitter cards now use a 1200x630 PNG rasterized directly from the blue-heart public/og-preview.svg. Both public pages reference this raster URL. Reproduce it with `npx playwright install chromium` and `node tools/render-social-preview.mjs` (lockfile-pinned Playwright). The final PNG is committed as a static asset; normal builds require no browser. Check social providers after release.

@@ -30,6 +30,8 @@ test('public pages have canonical and social metadata with matching sitemap loca
       assert.ok(attrs(html, 'meta').some(item => item.includes('name="' + name + '"')),
         'Missing ' + name + ' on ' + page.path);
     }
+    assert.match(html, /property="og:image" content="https:\/\/atto-xo\.github\.io\/og-preview\.png"/);
+    assert.match(html, /name="twitter:image" content="https:\/\/atto-xo\.github\.io\/og-preview\.png"/);
     assert.match(html, /Trading can result in loss of capital/i);
     assert.doesNotMatch(html, /<script[^>]*src="https?:\/\//i);
   }
@@ -66,4 +68,16 @@ test('QA evidence upload is pinned and intentionally not a deployment', () => {
   assert.match(workflow, /path: qa-evidence\//);
   assert.match(workflow, /if-no-files-found: error/);
   assert.match(workflow, /if: always\(\)/);
+});
+
+
+test('raster social card is a real 1200x630 PNG with reviewed SVG retained', () => {
+  const png = readFileSync(join(dist, 'og-preview.png'));
+  assert.equal(png.subarray(0, 8).toString('hex'), '89504e470d0a1a0a');
+  assert.equal(png.readUInt32BE(16), 1200);
+  assert.equal(png.readUInt32BE(20), 630);
+  assert.ok(png.length > 10000 && png.length < 2000000, 'Unexpected social image size');
+  const svg = readFileSync(join(dist, 'og-preview.svg'), 'utf8');
+  assert.match(svg, /#326bff/i);
+  assert.match(svg, /Find the signal/);
 });
