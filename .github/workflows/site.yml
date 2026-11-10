@@ -42,6 +42,14 @@ jobs:
         run: npm run test:e2e
       - name: Run preserved Rust guard tests
         run: cargo test --manifest-path tools/rust-bootstrap/Cargo.toml
+      - name: Preserve browser QA evidence
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: atto-xo-browser-evidence-${{ github.run_id }}
+          path: qa-evidence/
+          retention-days: 7
+          if-no-files-found: error
       - name: Package Pages artifact
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
