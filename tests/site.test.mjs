@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as fs from 'node:fs';
+import { createHash } from 'node:crypto';
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 
@@ -170,4 +171,16 @@ test('first-party HTML, styles and scripts respect deterministic transfer-size b
   assert.ok(sum('.js') <= 50 * 1024, 'First-party JS exceeds 50 KiB');
   assert.ok(htmlBytes + sum('.css') + sum('.js') <= 250 * 1024,
     'First-party homepage asset budget exceeds 250 KiB');
+});
+
+
+test('committed dependency lockfile matches the independently generated CI receipt', () => {
+  const lock = readFileSync(resolve('package-lock.json'));
+  const receipt = readFileSync(resolve('tools/lockfile.sha256'), 'utf8').trim();
+  const actual = createHash('sha256').update(lock).digest('hex');
+  assert.equal(receipt, actual + '  package-lock.json', 'Dependency lock receipt does not match');
+  const lockJson = JSON.parse(lock);
+  assert.equal(lockJson.lockfileVersion, 3);
+  assert.equal(lockJson.packages[''].name, 'atto-xo-site');
+  assert.ok(lockJson.packages['node_modules/astro']?.integrity, 'Missing Astro tarball integrity');
 });
