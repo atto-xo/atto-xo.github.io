@@ -112,7 +112,7 @@ test('crawler files discover only the canonical public home page', () => {
   assert.match(robots, /^Allow:\s*\/$/m);
   assert.match(robots, /^Sitemap:\s*https:\/\/atto-xo\.github\.io\/sitemap\.xml$/m);
   assert.match(sitemap, /<urlset xmlns="http:\/\/www\.sitemaps\.org\/schemas\/sitemap\/0\.9">/);
-  assert.deepEqual([...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(m => m[1]), ['https://atto-xo.github.io/']);
+  assert.deepEqual([...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(m => m[1]), ['https://atto-xo.github.io/', 'https://atto-xo.github.io/research-demo/']);
   assert.doesNotMatch(sitemap, /404\.html/);
 });
 
@@ -183,4 +183,19 @@ test('committed dependency lockfile matches the independently generated CI recei
   assert.equal(lockJson.lockfileVersion, 3);
   assert.equal(lockJson.packages[''].name, 'atto-xo-site');
   assert.ok(lockJson.packages['node_modules/astro']?.integrity, 'Missing Astro tarball integrity');
+});
+
+
+test('synthetic research demo is built, indexed, and clearly isolated from trading execution', () => {
+  const demoPath = join(dist, 'research-demo', 'index.html');
+  assert.ok(existsSync(demoPath), 'Missing /research-demo/ static route');
+  const html = readFileSync(demoPath, 'utf8');
+  assert.match(html, /<html[^>]*lang="en"/);
+  assert.match(html, /rel="canonical" href="https:\/\/atto-xo\.github\.io\/research-demo\/"/);
+  assert.match(html, /Synthetic|synthetic/);
+  assert.match(html, /No live data|does not fetch market data/i);
+  assert.match(html, /no buy, sell, account, order-routing, or execution capability/i);
+  assert.match(html, /Human decision required/);
+  assert.match(home, /href="\/research-demo\/"/);
+  assert.doesNotMatch(html, /<form\b/i);
 });

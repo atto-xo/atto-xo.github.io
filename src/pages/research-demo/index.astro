@@ -1,0 +1,177 @@
+---
+import '../../styles/global.css';
+import '../../styles/research-demo.css';
+import { DEMO_CANDIDATES } from '../../lib/research-demo.mjs';
+const heart = 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Explore a deterministic synthetic Atto XO research illustration: nonlinear curve fitting, constrained integer allocation, and human decision review. No real trading signals." />
+    <meta name="theme-color" content="#090f21" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Research demo — Atto XO" />
+    <meta property="og:description" content="Try synthetic modeling and bounded integer optimization. No live data or brokerage execution." />
+    <meta property="og:url" content="https://atto-xo.github.io/research-demo/" />
+    <meta property="og:image" content="https://atto-xo.github.io/og-preview.svg" />
+    <link rel="canonical" href="https://atto-xo.github.io/research-demo/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>Research demo — Atto XO</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="demo-shell">
+      <header class="demo-header">
+        <div class="container demo-header-inner">
+          <a class="brand" href="/"><span class="brand-atto">atto</span><span class="brand-x">x</span><svg class="brand-heart" viewBox="0 0 24 24" aria-hidden="true"><path d={heart}/></svg><span class="sr-only">o — home</span></a>
+          <a class="demo-home" href="/">Back to Atto XO</a>
+        </div>
+      </header>
+      <main class="container demo-main" id="main">
+        <div class="demo-lead">
+          <p class="section-kicker">INTERACTIVE / EDUCATIONAL CONCEPT</p>
+          <h1>Understand the model.<br/><span class="gradient-text">Own the decision.</span></h1>
+          <p>Explore a simplified research workflow: fit a synthetic curve, evaluate bounded integer allocation choices under hard constraints, then review without executing a trade.</p>
+          <div class="demo-disclaimer"><strong>Simulated demonstration only.</strong> All observations, scores, costs, and downside units are invented. This page does not fetch market data, predict returns, connect to a brokerage, or provide financial advice. Atto XO remains in development.</div>
+        </div>
+
+        <section class="demo-step" aria-labelledby="model-heading">
+          <div class="demo-step-header">
+            <p class="section-kicker">01 / MODEL</p>
+            <h2 id="model-heading">See a nonlinear fit.</h2>
+            <p>A small quadratic least-squares model is fitted to nine fixed, artificial observations. The dotted endpoint is extrapolation for demonstration, not a market forecast or confidence interval.</p>
+          </div>
+          <div class="demo-grid">
+            <div class="demo-card">
+              <svg class="demo-chart" viewBox="0 0 640 224" role="img" aria-labelledby="demo-chart-title demo-chart-desc">
+                <title id="demo-chart-title">Synthetic quadratic research model</title>
+                <desc id="demo-chart-desc">An illustrative blue quadratic curve fitted to nine invented observations; dashed final segment is an extrapolation.</desc>
+                <g class="gridline"><path d="M24 45H616M24 112H616M24 179H616" /></g>
+                <path id="observed-path" class="observed" d=""></path>
+                <path id="fit-path" class="fit" d=""></path>
+                <path id="future-path" class="future" d=""></path>
+              </svg>
+              <div class="demo-legend"><span>Invented observations</span><span>Quadratic fit</span><span>Extrapolation</span></div>
+            </div>
+            <div class="demo-card">
+              <h3>What the curve illustrates</h3>
+              <span class="demo-stat" id="demo-next-point">—</span>
+              <span class="demo-stat-label">Next synthetic curve point (arbitrary units)</span>
+              <p>Curve fitting explores a relationship in data. It does not establish causality, accuracy out of sample, uncertainty, or trading profitability.</p>
+              <p><strong>Independent inputs:</strong> the example allocation scores below are fixed fictional numbers; the fitted curve does not generate them.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="demo-step" aria-labelledby="opt-heading">
+          <div class="demo-step-header">
+            <p class="section-kicker">02 / OPTIMIZE</p>
+            <h2 id="opt-heading">See hard constraints at work.</h2>
+            <p>Choose limits, then compare the highest-scoring feasible integer allocation. The tiny search is solved exhaustively, illustrating a bounded mixed-integer optimization problem—not a production MILP solver.</p>
+          </div>
+          <div class="demo-card">
+            <div class="demo-form-grid">
+              <div class="demo-control"><label for="demo-budget">Illustrative budget</label><input id="demo-budget" type="range" min="50" max="150" step="10" value="90"/><output id="budget-value" for="demo-budget">90 units</output></div>
+              <div class="demo-control"><label for="demo-risk">Downside limit</label><input id="demo-risk" type="range" min="4" max="25" step="1" value="12"/><output id="risk-value" for="demo-risk">12 units</output></div>
+              <div class="demo-control"><label for="demo-units">Total unit cap</label><input id="demo-units" type="range" min="1" max="6" step="1" value="4"/><output id="units-value" for="demo-units">4 units</output></div>
+            </div>
+            <div class="demo-actions">
+              <button id="demo-reset" type="button" class="demo-reset">Reset constraints</button>
+              <span id="demo-status" class="demo-status" role="status" aria-live="polite">Evaluating synthetic possibilities…</span>
+            </div>
+          </div>
+          <div class="demo-card" style="margin-top:20px">
+            <div class="demo-constraints" aria-label="Allocation totals">
+              <div class="demo-metric"><span>Budget used</span><strong id="used-budget">—</strong><span>of selected budget</span></div>
+              <div class="demo-metric"><span>Downside used</span><strong id="used-risk">—</strong><span>of selected downside limit</span></div>
+              <div class="demo-metric"><span>Research score</span><strong id="total-score">—</strong><span>invented points, not return</span></div>
+            </div>
+            <div class="demo-table-wrap">
+              <table class="demo-table">
+                <caption class="sr-only">Selected units of each fictional research candidate</caption>
+                <thead><tr><th scope="col">Synthetic candidate</th><th scope="col">Unit cost</th><th scope="col">Downside / unit</th><th scope="col">Score / unit</th><th scope="col">Allocated units</th></tr></thead>
+                <tbody>
+                  {DEMO_CANDIDATES.map(candidate =>
+                    <tr data-candidate={candidate.id}><th scope="row">{candidate.name}</th><td>{candidate.cost}</td><td>{candidate.downside}</td><td>{candidate.score}</td><td data-output="units">—</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <p class="demo-note">Each candidate has a fixed per-candidate cap. The example evaluates every allowed integer combination, rejects those violating budget, downside, or total-unit limits, then selects the feasible maximum-score combination (ties prefer lower downside and then lower budget use). The zero-unit allocation remains available.</p>
+          </div>
+        </section>
+
+        <section class="demo-step" aria-labelledby="decision-heading">
+          <div class="demo-step-header">
+            <p class="section-kicker">03 / DECIDE</p>
+            <h2 id="decision-heading">The human remains responsible.</h2>
+          </div>
+          <div class="demo-card demo-decision">
+            <div>
+              <strong>Feasible does not mean advisable.</strong>
+              <p>A mathematical constraint check is not a recommendation. Before any real decision, a trader would need trustworthy data, model validation, scenario stress testing, transaction costs, regulatory consideration, and explicit authorization.</p>
+              <p>There is no buy, sell, account, order-routing, or execution capability in this demonstration.</p>
+            </div>
+            <span class="demo-pill">Human decision required</span>
+          </div>
+        </section>
+      </main>
+      <footer class="demo-footer">
+        <div class="container">
+          <p><strong>Research and risk disclosure.</strong> Atto XO is in development. Every value here is illustrative. Nothing here is financial advice, a solicitation, an execution service, or a guarantee of returns. Trading can result in loss of capital.</p>
+          <a class="demo-home" href="/">Return to the Atto XO homepage</a>
+        </div>
+      </footer>
+    </div>
+    <script>
+      import { SYNTHETIC_SERIES, fitQuadratic, solvePortfolio, DEMO_CANDIDATES } from '../../lib/research-demo.mjs';
+
+      const get = id => document.getElementById(id);
+      const observations = [...SYNTHETIC_SERIES];
+      const model = fitQuadratic(observations);
+      const series = [...observations, model.nextIllustrativePoint, ...model.fitted];
+      const low = Math.min(...series) - 3;
+      const high = Math.max(...series) + 3;
+      const toX = i => 24 + i * (592 / observations.length);
+      const toY = value => 202 - (value - low) * (180 / (high - low));
+      const path = (points, startIndex = 0) => points.map((value, i) =>
+        (i === 0 ? 'M' : 'L') + toX(startIndex + i).toFixed(1) + ' ' + toY(value).toFixed(1)
+      ).join(' ');
+      get('observed-path').setAttribute('d', path(observations));
+      get('fit-path').setAttribute('d', path(model.fitted));
+      get('future-path').setAttribute('d', path([model.fitted.at(-1), model.nextIllustrativePoint], observations.length - 1));
+      get('demo-next-point').textContent = model.nextIllustrativePoint.toFixed(1);
+
+      function render() {
+        const budget = Number(get('demo-budget').value);
+        const downsideLimit = Number(get('demo-risk').value);
+        const maxUnits = Number(get('demo-units').value);
+        get('budget-value').textContent = budget + ' units';
+        get('risk-value').textContent = downsideLimit + ' units';
+        get('units-value').textContent = maxUnits + ' units';
+        const solution = solvePortfolio({ budget, downsideLimit, maxUnits });
+        get('used-budget').textContent = solution.usedBudget + ' / ' + budget;
+        get('used-risk').textContent = solution.usedDownside + ' / ' + downsideLimit;
+        get('total-score').textContent = String(solution.score);
+        for (const [i, candidate] of DEMO_CANDIDATES.entries()) {
+          const row = document.querySelector('[data-candidate="' + candidate.id + '"]');
+          row.querySelector('[data-output="units"]').textContent = String(solution.units[i]);
+        }
+        get('demo-status').textContent = solution.feasible + ' of ' + solution.examined +
+          ' combinations satisfy all selected limits.';
+      }
+      for (const id of ['demo-budget', 'demo-risk', 'demo-units']) {
+        get(id).addEventListener('input', render);
+      }
+      get('demo-reset').addEventListener('click', () => {
+        get('demo-budget').value = '90';
+        get('demo-risk').value = '12';
+        get('demo-units').value = '4';
+        render();
+      });
+      render();
+    </script>
+  </body>
+</html>
