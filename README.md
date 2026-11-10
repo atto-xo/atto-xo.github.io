@@ -96,4 +96,4 @@ The public social card remains SVG-based; compatibility with raster-only social 
 
 ## Lighthouse CI (synthetic lab metrics)
 
-Lighthouse 13.6.0 audits both static pages against a local Astro preview with Playwright Chromium. Starting floors are performance 50/100, accessibility 90/100, best-practices 90/100, SEO 85/100; lab CLS <= 0.15 and LCP <= 7000 ms. These are single-run CI lab checks, not real-user field Core Web Vitals. JSON reports go into the seven-day QA artifact. The initial dependency bootstrap must be replaced by a verified lockfile and `npm ci` before release.
+Lighthouse 13.6.0 audits both static pages against a local Astro preview with Playwright Chromium. After the initial audited baseline, the enforceable budgets in tools/lighthouse-budgets.json are performance 80/100, accessibility 95/100, best-practices 95/100, SEO 95/100; lab CLS <= 0.15 and LCP <= 4000 ms. These are single-run CI lab checks, not real-user field Core Web Vitals. JSON reports go into the seven-day QA artifact. The initial dependency bootstrap must be replaced by a verified lockfile and `npm ci` before release.

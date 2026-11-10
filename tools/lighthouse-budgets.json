@@ -1,0 +1,12 @@
+{
+  "categoryMinimum": {
+    "performance": 0.8,
+    "accessibility": 0.95,
+    "best-practices": 0.95,
+    "seo": 0.95
+  },
+  "metricMaximum": {
+    "cumulative-layout-shift": 0.15,
+    "largest-contentful-paint": 4000
+  }
+}

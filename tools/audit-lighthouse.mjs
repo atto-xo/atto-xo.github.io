@@ -9,8 +9,9 @@ const execFileAsync = promisify(execFile);
 const origin = 'http://127.0.0.1:4321';
 const outputDir = resolve('qa-evidence/lighthouse');
 const routes = [{ path: '/', name: 'home' }, { path: '/research-demo/', name: 'research-demo' }];
-const floors = { performance: 0.50, accessibility: 0.90, 'best-practices': 0.90, seo: 0.85 };
-const budgets = { 'cumulative-layout-shift': 0.15, 'largest-contentful-paint': 7000 };
+const limits = JSON.parse(await readFile(resolve('tools/lighthouse-budgets.json'), 'utf8'));
+const floors = limits.categoryMinimum;
+const budgets = limits.metricMaximum;
 const sleep = ms => new Promise(done => setTimeout(done, ms));
 async function waitForPreview() {
   for (let attempt = 0; attempt < 100; attempt++) {
