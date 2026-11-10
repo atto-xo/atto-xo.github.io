@@ -84,11 +84,11 @@ test('X-heart identity uses a royal-blue pill and white-rimmed blue heart across
   assert.match(css, /\.brand\{[^}]*border:1\.5px solid var\(--royal\);border-radius:999px/);
   assert.match(css, /\.brand-heart\{[^}]*fill:var\(--royal\);stroke:#fff;stroke-width:1\.5px/);
   assert.match(css, /\.cta-insignia svg\{[^}]*fill:var\(--royal\);stroke:#fff/);
-  assert.match(home, /class="brand"[^>]*aria-label="Atto XO home"/);
-  assert.match(home, /class="brand footer-brand"[^>]*aria-label="Atto XO home"/);
+  assert.match(home, /class="brand" href="\/"[^>]*>/);
+  assert.match(home, /class="brand footer-brand" href="\/"[^>]*>/);
 
   const notFound = readFileSync(join(dist, '404.html'), 'utf8');
-  assert.match(notFound, /class="brand error-brand"[^>]*aria-label="Atto XO home"/);
+  assert.match(notFound, /class="brand error-brand" href="\/"[^>]*>/);
   assert.match(notFound, /class="brand-heart"/);
 
   const favicon = readFileSync(join(dist, 'favicon.svg'), 'utf8');

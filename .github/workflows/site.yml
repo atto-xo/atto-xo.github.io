@@ -28,12 +28,8 @@ jobs:
         with:
           node-version: '24'
           package-manager-cache: false
-      # Bootstrap run only: seed the lockfile from trusted CI npm resolution.
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
-      - name: Export dependency lock for reproducible CI bootstrap (temporary)
-        run: |
-          node --input-type=module -e "import fs from 'node:fs'; import crypto from 'node:crypto'; const data=fs.readFileSync('package-lock.json'); console.log('ATTO_LOCK_SHA256:'+crypto.createHash('sha256').update(data).digest('hex')); const b=data.toString('base64'); console.log('ATTO_LOCK_BEGIN'); for (let i=0;i<b.length;i+=1200) console.log('ATTO_LOCK_CHUNK:'+b.slice(i,i+1200)); console.log('ATTO_LOCK_END');"
+        run: npm ci --no-audit --no-fund
       - name: Build static Astro pages
         run: npm run build
       - name: Run content, link, and compliance smoke tests
