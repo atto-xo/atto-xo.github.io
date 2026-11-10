@@ -40,11 +40,8 @@ jobs:
         run: npm test
       - name: Install Chromium, Firefox, WebKit and Linux browser dependencies
         run: npx playwright install --with-deps chromium firefox webkit
-      - name: Generate candidate visual baselines from all five browser profiles (bootstrap only)
-        run: |
-          VISUAL_BASELINE_RECORD=1 npm run test:e2e
-          node tools/export-visual-receipt.mjs
-
+      - name: Enforce committed visual baselines across Chromium Firefox WebKit
+        run: npm run test:e2e
       - name: Run preserved Rust guard tests
         run: cargo test --manifest-path tools/rust-bootstrap/Cargo.toml
       - name: Preserve browser QA evidence
