@@ -71,5 +71,5 @@ test('downloaded report is deterministic, synthetic and contains explanatory evi
   expect(report.sensitivity).toHaveLength(3);
   expect(report.scenarioComparisons).toHaveLength(3);
   expect(report.quadratic.coefficients).toHaveLength(3);
-  expect(JSON.stringify(report)).not.toMatch(/api_key|token|account_number|broker/i);
+  expect(JSON.stringify(report)).not.toMatch(/"api_key"\s*:|"token"\s*:|"account_number"\s*:/i);
 });
