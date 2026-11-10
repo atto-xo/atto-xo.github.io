@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://atto-xo.github.io/sitemap.xml

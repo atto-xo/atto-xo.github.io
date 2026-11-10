@@ -97,3 +97,55 @@ test('X-heart identity uses a royal-blue pill and white-rimmed blue heart across
   assert.match(socialPreview, /rx="56"[^>]*stroke="#326bff"/);
   assert.match(socialPreview, /fill="#326bff" stroke="#ffffff"/);
 });
+
+
+test('crawler files discover only the canonical public home page', () => {
+  const robotsPath = join(dist, 'robots.txt');
+  const sitemapPath = join(dist, 'sitemap.xml');
+  assert.ok(existsSync(robotsPath), 'Missing robots.txt');
+  assert.ok(existsSync(sitemapPath), 'Missing sitemap.xml');
+  const robots = readFileSync(robotsPath, 'utf8');
+  const sitemap = readFileSync(sitemapPath, 'utf8');
+  assert.match(robots, /^User-agent:\s*\*$/m);
+  assert.match(robots, /^Allow:\s*\/$/m);
+  assert.match(robots, /^Sitemap:\s*https:\/\/atto-xo\.github\.io\/sitemap\.xml$/m);
+  assert.match(sitemap, /<urlset xmlns="http:\/\/www\.sitemaps\.org\/schemas\/sitemap\/0\.9">/);
+  assert.deepEqual([...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(m => m[1]), ['https://atto-xo.github.io/']);
+  assert.doesNotMatch(sitemap, /404\.html/);
+});
+
+test('fragment links, heading references, and element identifiers are valid', () => {
+  const allIds = [...home.matchAll(/\bid="([^"]+)"/g)].map(m => m[1]);
+  assert.equal(new Set(allIds).size, allIds.length, 'Duplicate element ID');
+  const ids = new Set(allIds);
+  for (const [, target] of home.matchAll(/\bhref="#([^"]+)"/g)) {
+    assert.ok(ids.has(target), 'Unresolved fragment: #' + target);
+  }
+  for (const [, refs] of home.matchAll(/\baria-labelledby="([^"]+)"/g)) {
+    for (const id of refs.split(/\s+/)) {
+      assert.ok(ids.has(id), 'Unresolved heading reference: ' + id);
+    }
+  }
+  assert.match(home, /<a class="skip-link" href="#main">Skip to content<\/a>/);
+  assert.match(home, /<summary aria-label="Toggle navigation">/);
+});
+
+test('anchors use secure destinations and protect new windows', () => {
+  for (const [, attributes] of home.matchAll(/<a\b([^>]*)>/g)) {
+    const href = attributes.match(/\bhref="([^"]+)"/)?.[1];
+    assert.ok(href, 'Anchor without href');
+    assert.ok(href.startsWith('#') || href.startsWith('/') || href.startsWith('https://'),
+      'Unexpected or insecure link: ' + href);
+    if (/\btarget="_blank"/.test(attributes)) {
+      assert.match(attributes, /\brel="[^"]*\bnoopener\b[^"]*"/);
+    }
+  }
+});
+
+test('manual dispatch cannot bypass main-only Pages publication', () => {
+  const workflow = readFileSync(resolve('.github/workflows/site.yml'), 'utf8');
+  const gate = "github.ref == 'refs/heads/main' && github.event_name != 'pull_request'";
+  assert.equal(workflow.split(gate).length - 1, 2, 'Both upload and deploy require main');
+  assert.match(workflow, /persist-credentials: false/);
+  assert.match(workflow, /permissions:\s*\n\s*contents: read/);
+});

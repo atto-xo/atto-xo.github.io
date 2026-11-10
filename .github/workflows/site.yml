@@ -17,9 +17,12 @@ jobs:
   verify:
     name: Build and smoke-test site
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
@@ -34,16 +37,17 @@ jobs:
       - name: Run preserved Rust guard tests
         run: cargo test --manifest-path tools/rust-bootstrap/Cargo.toml
       - name: Package Pages artifact
-        if: github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v4
         with:
           path: dist
 
   deploy:
     name: Publish GitHub Pages
-    if: github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: verify
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       pages: write
       id-token: write

@@ -24,13 +24,17 @@ Astro emits static pages to `dist/`. No server-side runtime or secrets are requi
 The GitHub Actions workflow in `.github/workflows/site.yml` verifies the website on pull requests and deploys `dist/` after a successful build on `main`.
 
 1. In repository **Settings → Pages**, choose **GitHub Actions** as the build/deployment source.
-2. Confirm this private repository's plan and Pages settings support the intended **public** site. A private repository does not automatically mean a private published website.
+2. Confirm that Pages is enabled for this public repository, with **GitHub Actions** selected as the publishing source.
 3. Merge the marketing site PR after the build and content checks pass.
 4. Confirm that `https://atto-xo.github.io/` resolves and review the live mobile/desktop page.
 
 Because the repository name is `atto-xo.github.io`, Astro's `site` is `https://atto-xo.github.io` and no repository subpath (`base`) is needed. The build is intentionally **not** a Jekyll/Hugo pipeline.
 
-The initial migration uses `npm install` because an npm-generated lockfile cannot be produced without registry access in the authoring environment. Generate and commit `package-lock.json` from a trusted dependency resolution, switch CI to `npm ci`, and preserve exact dependency evidence before a release freeze.
+The initial migration uses `npm install` because a verified lockfile has not yet been generated. **Reproducible dependency resolution remains an open release gate:** generate and commit `package-lock.json` from a trusted registry resolution, switch CI to `npm ci`, and retain dependency provenance before a release freeze.
+
+### Deployment safeguards
+
+Pull requests build and test without publishing. Artifact upload and deployment require `refs/heads/main`, including manually dispatched runs. Checkout does not persist repository credentials in the runner workspace. A green CI run does not replace a review of public claims and disclosures.
 
 ## Copy standards and design principles
 
@@ -49,6 +53,8 @@ src/pages/404.astro         Custom not-found page
 src/styles/global.css       Responsive, accessible dark/royal-blue design
 public/favicon.svg          X-heart brand icon
 public/og-preview.svg       Social sharing graphic
+public/sitemap.xml          Canonical crawler sitemap
+public/robots.txt           Crawler policy and sitemap discovery
 tests/site.test.mjs         Built-page, navigation, and claims tests
 .github/workflows/site.yml  Static verification and GitHub Pages deployment
 tools/rust-bootstrap/       Preserved repository validation helper
