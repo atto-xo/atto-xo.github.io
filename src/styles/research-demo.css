@@ -56,3 +56,22 @@
 .demo-footer p{max-width:960px;margin-bottom:14px}
 @media(max-width:900px){.demo-grid{grid-template-columns:1fr}.demo-form-grid{grid-template-columns:1fr}.demo-main{padding-top:55px}}
 @media(max-width:620px){.demo-card{padding:17px}.demo-main{padding-top:45px}.demo-constraints{grid-template-columns:1fr}.demo-decision{grid-template-columns:1fr}.demo-chart{min-height:150px}.demo-lead>p:not(.section-kicker){font-size:14px}}
+
+.demo-scenario-box{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;background:#122c4d;border:1px solid #48658b;border-radius:9px;padding:15px 19px;margin-bottom:21px}
+.demo-scenario-box label{font-weight:750;color:#f1f6ff;font-size:14px}
+.demo-scenario-box p{margin:5px 0 0;max-width:570px;color:#c3d2ec;line-height:1.6;font-size:12px}
+.demo-scenario-box select{min-width:235px;max-width:100%;background:#1a3964;border:1px solid #8cb1e9;border-radius:7px;color:#fff;padding:12px;font:600 13px var(--body);min-height:43px}
+.demo-scenario-box select:focus-visible{outline:3px solid #b9d4ff;outline-offset:3px}
+.demo-subsection{border-top:1px solid #304970;margin-top:23px;padding-top:24px}
+.demo-subsection h3{margin:0 0 10px;font-size:21px}
+.demo-muted{color:#c3d2ec;line-height:1.75;font-size:12px}
+.demo-reasons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:17px 0}
+.demo-reason{background:#142847;border:1px solid #36567d;border-radius:8px;padding:15px;min-width:0}
+.demo-reason strong{color:#eaf1ff;font-size:14px}
+.demo-reason p{margin:8px 0 0}
+.demo-sensitivity{list-style:none;margin:20px 0 0;padding:0}
+.demo-sensitivity li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #3a4b6d;padding:12px 2px;color:#d6e5ff;font-size:13px}
+.demo-sensitivity strong{color:#e8f0ff;text-align:right;font-size:12px}
+.demo-actions .demo-reset{min-height:44px}
+@media(max-width:900px){.demo-reasons{grid-template-columns:1fr}}
+@media(max-width:620px){.demo-scenario-box select{width:100%;min-width:0}.demo-actions .demo-reset{width:100%}}

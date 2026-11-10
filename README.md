@@ -108,3 +108,8 @@ The `/architecture/` page describes intended Rust-first research workflow bounda
 ### Cross-browser E2E gate
 
 GitHub Actions runs the existing accessibility, risk-disclosure, navigation and synthetic-optimization browser tests in **Chromium** (desktop, 390px and 320px mobile), **Firefox** (desktop), and **WebKit** (desktop). Browser engines are installed via the lockfile-pinned Playwright CLI and Linux packages; no third-party brokerage access is required. Screenshot evidence is retained per Playwright project with a bounded 7-day artifact lifetime. Cross-browser engine execution is a regression check, not formal screen-reader or native-device certification.
+
+
+## Explainable synthetic research demo v2
+
+The research demo now provides three fictional constraint scenarios, forced-inclusion explanations of candidate exclusions (reoptimizing the entire bounded allocation), overlapping constraint-violation counts, sensitivity checks, and a JSON report generated locally in the browser. The report is deterministic and timestamp-free, contains only static invented observations, constraints, scores, and diagnostics, and explicitly disclaims market data or financial advice. It is not a production MILP optimizer or a live trading service.
