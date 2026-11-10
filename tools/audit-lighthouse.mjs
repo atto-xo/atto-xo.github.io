@@ -22,12 +22,10 @@ async function waitForPreview() {
   }
   throw new Error('Astro static preview did not become ready');
 }
-const preview = spawn('npm', ['run', 'preview', '--', '--host', '127.0.0.1', '--port', '4321'], {
-  stdio: ['ignore', 'pipe', 'pipe'], env: process.env
-});
-let previewLog = '';
-preview.stdout.on('data', data => { previewLog += data.toString(); });
-preview.stderr.on('data', data => { previewLog += data.toString(); });
+const preview = spawn(resolve('node_modules/.bin/astro'),
+  ['preview', '--host', '127.0.0.1', '--port', '4321'], {
+    stdio: 'ignore', env: process.env
+  });
 try {
   await waitForPreview();
   await mkdir(outputDir, { recursive: true });
@@ -70,7 +68,6 @@ try {
   await writeFile(resolve(outputDir, 'summary.json'), JSON.stringify(summaries, null, 2) + '\n');
 } catch (error) {
   console.error('Lighthouse gate failed:', error);
-  console.error(previewLog.slice(-5000));
   process.exitCode = 1;
 } finally {
   preview.kill('SIGTERM');
