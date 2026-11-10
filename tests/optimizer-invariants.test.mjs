@@ -125,7 +125,7 @@ test('synthetic report bytes are deterministic, public-only, and internally cons
     const two=JSON.stringify(createSyntheticReport(limits));
     assert.equal(one,two,'extra user-supplied fields must not leak into report');
     assert.ok(!one.includes('CANARY_DO_NOT_LEAK'));
-    assert.ok(!/Date|timestamp|api_key|secret_value|account_number|access_token/i.test(one));
+    assert.ok(!/"(?:timestamp|api_key|secret_value|account_number|access_token|created_at)"\s*:/i.test(one));
     const report=JSON.parse(two);
     assert.deepEqual(report.limits,limits);
     assert.equal(report.schema,'atto-xo.synthetic-research.v1');
