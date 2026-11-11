@@ -34,6 +34,14 @@ test('viewport has no horizontal page overflow', async ({ page }) => {
     viewport: document.documentElement.clientWidth
   }));
   expect(sizes.document).toBeLessThanOrEqual(sizes.viewport + 1);
+  // The shell clips overflow, so scrollWidth alone can miss clipped CTAs.
+  const hero = await page.locator('.hero-copy').boundingBox();
+  const container = await page.locator('.hero-grid').boundingBox();
+  expect(hero.x + hero.width).toBeLessThanOrEqual(container.x + container.width + 1);
+  for (const button of await page.locator('.hero-actions .button').all()) {
+    const box = await button.boundingBox();
+    expect(box.x + box.width).toBeLessThanOrEqual(container.x + container.width + 1);
+  }
 });
 
 test('automated WCAG 2.1 A and AA audit passes', async ({ page }) => {
