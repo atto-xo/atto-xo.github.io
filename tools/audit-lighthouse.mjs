@@ -8,7 +8,7 @@ import { chromium } from '@playwright/test';
 const execFileAsync = promisify(execFile);
 const origin = 'http://127.0.0.1:4321';
 const outputDir = resolve('qa-evidence/lighthouse');
-const routes = [{ path: '/', name: 'home' }, { path: '/research-demo/', name: 'research-demo' }];
+const routes = [{ path: '/', name: 'home' }, { path: '/research-demo/', name: 'research-demo' }, { path: '/architecture/', name: 'architecture' }];
 const limits = JSON.parse(await readFile(resolve('tools/lighthouse-budgets.json'), 'utf8'));
 const floors = limits.categoryMinimum;
 const budgets = limits.metricMaximum;
