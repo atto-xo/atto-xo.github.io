@@ -17,33 +17,55 @@ jobs:
   verify:
     name: Build and smoke-test site
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: '24'
-      # Package-lock is pending first dependency resolution. npm install is intentional.
+          package-manager-cache: false
+      - name: Verify pinned lockfile checksum
+        run: sha256sum --check tools/lockfile.sha256
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
+      - name: Verify raster asset receipt
+        run: sha256sum --check tools/social-preview.sha256
       - name: Build static Astro pages
         run: npm run build
       - name: Run content, link, and compliance smoke tests
         run: npm test
+      - name: Install Chromium, Firefox, WebKit and Linux browser dependencies
+        run: npx playwright install --with-deps chromium firefox webkit
+      - name: Enforce committed visual baselines across Chromium Firefox WebKit
+        run: npm run test:e2e
+      - name: Lighthouse mobile performance and accessibility lab gate
+        run: npm run audit:lighthouse
       - name: Run preserved Rust guard tests
         run: cargo test --manifest-path tools/rust-bootstrap/Cargo.toml
+      - name: Preserve browser QA evidence
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: atto-xo-browser-evidence-${{ github.run_id }}
+          path: qa-evidence/
+          retention-days: 7
+          if-no-files-found: error
       - name: Package Pages artifact
-        if: github.event_name != 'pull_request'
-        uses: actions/upload-pages-artifact@v4
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
         with:
           path: dist
 
   deploy:
     name: Publish GitHub Pages
-    if: github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     needs: verify
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       pages: write
       id-token: write
@@ -53,4 +75,4 @@ jobs:
     steps:
       - name: Deploy site
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

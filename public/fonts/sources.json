@@ -1,0 +1,18 @@
+{
+  "dm-sans-latin.woff2": {
+    "url": "https://fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K6z9mXg.woff2",
+    "sha256": "468d56b6b25b05b70190b6c233d773f6f1770e8579827ce022a57f03fa8002fb"
+  },
+  "space-grotesk-latin.woff2": {
+    "url": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4C_k3HqU.woff2",
+    "sha256": "a0d054c4af557de20afd6ca59f47ab353bcaec49c63ff04b6c9d39d0f8910557"
+  },
+  "DM-Sans-OFL.txt": {
+    "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/dmsans/OFL.txt",
+    "sha256": "9af36190332437f5ecd09974de43c1f7c77a310a996cdd8ceb25628b458840e1"
+  },
+  "Space-Grotesk-OFL.txt": {
+    "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/spacegrotesk/OFL.txt",
+    "sha256": "564ce565c371c5e5bbf286006565a7c9aa55a9f56e7ca58d56e05d649dd61a72"
+  }
+}
