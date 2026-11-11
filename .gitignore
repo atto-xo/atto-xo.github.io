@@ -9,3 +9,6 @@ dist/
 playwright-report/
 test-results/
 qa-evidence/
+
+tools/rust-bootstrap/target/
+tools/rust-bootstrap/Cargo.lock

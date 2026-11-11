@@ -53,10 +53,12 @@ test('reduced-motion preference removes smooth scroll behavior', async ({ page }
   expect(behavior).toBe('auto');
 });
 
-test('desktop keyboard can reach skip link and enter content', async ({ page, isMobile }) => {
+test('desktop keyboard can reach skip link and enter content', async ({ page, isMobile, browserName }) => {
   test.skip(isMobile, 'Virtual mobile keyboards do not expose a Tab key');
   await page.goto('/');
-  await page.keyboard.press('Tab');
+  // Safari on macOS uses Option-Tab to include links by default.
+  // https://support.apple.com/guide/safari/keyboard-shortcuts-and-gestures-cpsh003/mac
+  await page.keyboard.press(process.platform === 'darwin' && browserName === 'webkit' ? 'Alt+Tab' : 'Tab');
   await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(page).toHaveURL(/#main$/);
