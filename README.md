@@ -127,3 +127,7 @@ The optimizer audit runs 4,096 seeded constraint configurations against a separa
 ## Lighthouse CI (synthetic lab metrics)
 
 Lighthouse 13.6.0 audits all three static pages against a local Astro preview with Playwright Chromium. After the initial audited baseline, the enforceable budgets in tools/lighthouse-budgets.json are performance 80/100, accessibility 95/100, best-practices 95/100, SEO 95/100; lab CLS <= 0.15 and LCP <= 4000 ms. These are single-run CI lab checks, not real-user field Core Web Vitals. JSON reports go into the seven-day QA artifact. Dependencies are resolved by the committed lockfile, verified by its SHA-256 receipt, and installed with `npm ci`.
+
+### Stable, local font loading
+
+The Latin DM Sans and Space Grotesk WOFF2 assets in `public/fonts/` are the same font versions observed in the original CI browser reports. Their upstream URLs and SHA-256 receipts are recorded in `public/fonts/sources.json`, with the upstream SIL Open Font Licenses alongside them. Pages preload the local files and use `font-display: optional`, so a slow download retains fallback text instead of causing a late layout shift. No Google Fonts request is needed at runtime. A delayed-font browser regression check covers the architecture page, which exceeded the existing CLS budget before this fix. Linux visual baselines remain unchanged and must still pass.

@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@font-face{font-family:'DM Sans';font-style:normal;font-weight:400 800;font-display:optional;src:url('/fonts/dm-sans-latin.woff2') format('woff2')}
+@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:400 700;font-display:optional;src:url('/fonts/space-grotesk-latin.woff2') format('woff2')}
 :root{color-scheme:dark;--bg:#080e1d;--panel:#0e172b;--line:#25324e;--royal:#326bff;--blue-soft:#91bdff;--white:#f4f7ff;--muted:#9eacc7;--display:'Space Grotesk',system-ui,sans-serif;--body:'DM Sans',system-ui,sans-serif;scroll-behavior:smooth}
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0;font-family:var(--body);background:var(--bg);color:var(--white);-webkit-font-smoothing:antialiased}
