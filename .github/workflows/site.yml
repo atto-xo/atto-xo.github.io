@@ -42,6 +42,8 @@ jobs:
         run: npx playwright install --with-deps chromium firefox webkit
       - name: Enforce committed visual baselines across Chromium Firefox WebKit
         run: npm run test:e2e
+      - name: Lighthouse mobile performance and accessibility lab gate
+        run: npm run audit:lighthouse
       - name: Run preserved Rust guard tests
         run: cargo test --manifest-path tools/rust-bootstrap/Cargo.toml
       - name: Preserve browser QA evidence

@@ -118,6 +118,12 @@ The research demo now provides three fictional constraint scenarios, forced-incl
 ### Visual regression baseline hardening
 
 The test suite captures full viewport PNG screenshots of the homepage, architecture page and three research-demo states in Chromium desktop/mobile/320px, Firefox, and WebKit. CI compares a committed coarse 20×12 RGB grid fingerprint for each engine/state (25 fingerprints) using defined color-difference tolerances; full screenshots and machine-readable comparisons are retained as review artifacts. The grid detects broad layout and palette regressions, not tiny glyph changes and **not** pixel-perfect visual equality. Baseline refreshes are explicit, never automatically accepted on ordinary PR CI.
+
 ### Independent numerical invariants and report reproducibility
 
 The optimizer audit runs 4,096 seeded constraint configurations against a separately implemented full enumeration oracle, checking score/tie-break/feasibility, each forced-candidate optimum and explainable overlapping violations. It also exercises zero-position and maximum-boundary inputs, parameter monotonicity, 250 synthetic quadratic fits and deterministic, unprivileged JSON report bytes (including that unknown user fields never leak). Playwright downloads the same JSON twice and checks byte equality across Chromium, Firefox and WebKit. These are software-correctness checks of an educational fixture, not investment-performance certification.
+
+
+## Lighthouse CI (synthetic lab metrics)
+
+Lighthouse 13.6.0 audits all three static pages against a local Astro preview with Playwright Chromium. After the initial audited baseline, the enforceable budgets in tools/lighthouse-budgets.json are performance 80/100, accessibility 95/100, best-practices 95/100, SEO 95/100; lab CLS <= 0.15 and LCP <= 4000 ms. These are single-run CI lab checks, not real-user field Core Web Vitals. JSON reports go into the seven-day QA artifact. Dependencies are resolved by the committed lockfile, verified by its SHA-256 receipt, and installed with `npm ci`.

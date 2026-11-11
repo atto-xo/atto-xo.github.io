@@ -9,8 +9,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "test": "node --test tests/*.test.mjs",
-    "check": "npm run build && npm test && npm run test:e2e",
-    "test:e2e": "playwright test"
+    "check": "npm run build && npm test && npm run test:e2e && npm run audit:lighthouse",
+    "test:e2e": "playwright test",
+    "audit:lighthouse": "node tools/audit-lighthouse.mjs"
   },
   "dependencies": {
     "astro": "^6.0.0"
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.0",
-    "@playwright/test": "^1.55.0"
+    "@playwright/test": "^1.55.0",
+    "lighthouse": "13.6.0"
   }
 }
