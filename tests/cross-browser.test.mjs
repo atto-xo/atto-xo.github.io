@@ -20,6 +20,6 @@ test('cross-browser runner remains free of privileged data access', () => {
   const workflow = readFileSync('.github/workflows/site.yml', 'utf8');
   assert.match(workflow, /permissions:\s*\n\s*contents: read/);
   assert.match(workflow, /persist-credentials: false/);
-  const deployGate = "github.ref == 'refs/heads/main' && github.event_name != 'pull_request'";
+  const deployGate = "github.ref == 'refs/heads/main' && github.event_name == 'push'";
   assert.equal(workflow.split(deployGate).length - 1, 2);
 });
