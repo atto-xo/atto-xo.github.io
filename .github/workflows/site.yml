@@ -41,7 +41,9 @@ jobs:
       - name: Install Chromium, Firefox, WebKit and Linux browser dependencies
         run: npx playwright install --with-deps chromium firefox webkit
       - name: Enforce committed visual baselines across Chromium Firefox WebKit
-        run: npm run test:e2e
+        run: |
+          VISUAL_BASELINE_RECORD=1 npm run test:e2e
+          node tools/export-visual-receipt.mjs > qa-evidence/visual-receipt.txt
       - name: Lighthouse mobile performance and accessibility lab gate
         run: npm run audit:lighthouse
       - name: Run preserved Rust guard tests
