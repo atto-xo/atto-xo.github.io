@@ -30,11 +30,21 @@ async function capture(page, info, state) {
     }
     await page.locator('#opt-heading').scrollIntoViewIfNeeded();
   }
-  await page.evaluate(async () => { await document.fonts.ready; });
+  const paint = await page.evaluate(async () => {
+    await document.fonts.ready;
+    await new Promise(requestAnimationFrame);
+    await new Promise(requestAnimationFrame);
+    return [...document.querySelectorAll('body, h1, h1 span, .brand, .brand-heart')].map(node => {
+      const css = getComputedStyle(node);
+      return { tag: node.tagName, color: css.color, fill: css.fill,
+        font: css.font, textFill: css.webkitTextFillColor };
+    });
+  });
   const png=await page.screenshot({animations:'disabled',fullPage:false});
   const folder=resolve('qa-evidence/visual', info.project.name);
   await mkdir(folder,{recursive:true});
   await writeFile(join(folder,state.label+'.png'),png);
+  await writeFile(join(folder,state.label+'-paint.json'),JSON.stringify(paint,null,2)+'\n');
   const fingerprint=await page.evaluate(async ({base64,width,height}) => {
     const image=new Image();
     image.src='data:image/png;base64,'+base64;
