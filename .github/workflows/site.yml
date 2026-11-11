@@ -9,5 +9,5 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - name: Deliberate failure for protection verification
-        run: exit 1
+      - name: Passing check for review protection verification
+        run: exit 0
