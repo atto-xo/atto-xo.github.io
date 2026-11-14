@@ -1,0 +1,35 @@
+---
+import '../styles/global.css';
+const title = 'Research methodology — Atto XO';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="https://atto-xo.github.io/methodology/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="description" content="How Atto XO proposes to evaluate synthetic research signals, uncertainty, portfolio constraints, and paper recommendations." />
+    <title>{title}</title>
+  </head>
+  <body>
+    <main id="main" class="container" style="max-width: 920px; padding-block: 5rem;">
+      <p><a href="/">Atto XO / Home</a></p>
+      <h1>Research methodology</h1>
+      <p>Atto XO is in development. This page describes a proposed research process, not deployed model results.</p>
+      <h2>1. Freeze a point-in-time snapshot</h2>
+      <p>Each proposed ten-minute cycle records data publication, observation and cutoff timestamps, source revisions, and model version. Information arriving after the cutoff is excluded.</p>
+      <h2>2. Estimate signals and uncertainty</h2>
+      <p>Models may estimate future returns, but confidence intervals, data drift, inference error, and evaluation leakage must be tested independently. Synthetic scenarios are illustrative, not evidence of market performance.</p>
+      <h2>3. Optimize only within explicit limits</h2>
+      <p>Whole-unit quantities, estimated fees, cash reservations, risk approvals and portfolio limits constrain proposed allocations. At most five distinct ranked paper recommendations may be published.</p>
+      <h2>4. Fail closed and preserve evidence</h2>
+      <p>Missing provenance, stale inputs, unapproved risk decisions, or an exceeded eight-minute target publication window must not be silently relabeled as success. Duplicate cycle IDs must not create duplicate publications.</p>
+      <h2>5. Keep the human decision separate</h2>
+      <p>The research publication is not an order submission. There is no live trading account or brokerage execution offered here. Any future execution would require independent security, compliance, and account authorization controls.</p>
+      <p><strong>Limitations:</strong> This is not financial advice, a guarantee of returns, or a claim of demonstrated production performance. Trading involves risk of loss of capital.</p>
+      <p><a href="https://github.com/atto-xo/atto-xo-rfcs">Review the proposed architecture and RFCs</a></p>
+    </main>
+  </body>
+</html>
